@@ -1,0 +1,17 @@
+../.idea
+.gradle
+.docker
+.vscode
+
+*/.gradle
+*/build
+*/bin
+*/.env
+
+*/*/.gradle
+*/*/build
+*/*/bin
+
+*/*/*/.gradle
+*/*/*/build
+*/*/*/bin
