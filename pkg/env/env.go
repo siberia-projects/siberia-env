@@ -52,14 +52,10 @@ func ExpandEnvIn(content []byte) ([]byte, error) {
 		return nil, fmt.Errorf("unable to expand: a content is nil")
 	}
 
-	newContent := make([]byte, len(content))
-	newContentIndex := 0
-
+	newContent := make([]byte, 0)
 	for i := 0; i < len(content); i++ {
 		if content[i] != environmentVariableBeginningSymbol {
-			newContent[newContentIndex] = content[i]
-			newContentIndex++
-
+			newContent = append(newContent, content[i])
 			continue
 		}
 
@@ -85,28 +81,10 @@ func ExpandEnvIn(content []byte) ([]byte, error) {
 		}
 
 		envValueBytes := []byte(envValue)
-		isNewContentIncreasingNeeded := false
-
-		for k := 0; k < len(envValueBytes); k++ {
-			if newContentIndex == len(newContent) {
-				isNewContentIncreasingNeeded = true
-			}
-
-			if isNewContentIncreasingNeeded {
-				newContent = append(newContent, envValueBytes[k])
-
-				isNewContentIncreasingNeeded = false
-				newContentIndex++
-
-				continue
-			}
-
-			newContent[newContentIndex] = envValueBytes[k]
-			newContentIndex++
-		}
+		newContent = append(newContent, envValueBytes...)
 
 		i += len(envKeyBytes) + 2
 	}
 
-	return newContent[:newContentIndex], nil
+	return newContent, nil
 }

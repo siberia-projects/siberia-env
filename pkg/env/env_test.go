@@ -95,7 +95,7 @@ var _ = Describe("Verifying correctness of env expansion", Label("env"), func() 
 		})
 
 		Context("and env variable is presented with too long value", func() {
-			It("should successfully expand the env with its value when the env exists", func() {
+			It("should successfully expand the env with its value when the env exists #1", func() {
 				// given
 				envVariableName := "APP_DSN"
 				envValue := "postgresql://localhost/app?user=dbuser&password=dbuser"
@@ -112,6 +112,37 @@ var _ = Describe("Verifying correctness of env expansion", Label("env"), func() 
 				// then
 				Expect(err).To(BeNil())
 				Expect(expandedContentString).To(Equal(envValue))
+			})
+
+			It("should successfully expand the env with its value when the env exists #2", func() {
+				// given
+				dsnEnvVariableName := "APP_DSN"
+				portEnvVariableName := "APP_PORT"
+
+				dsnEnvValue := "postgresql://localhost/app?user=dbuser&password=dbuser"
+				portEnvValue := "8080"
+
+				_ = os.Setenv(dsnEnvVariableName, dsnEnvValue)
+				_ = os.Setenv(portEnvVariableName, portEnvValue)
+
+				contentString := `application:
+				  name: "products-go"
+				
+				datasource:
+				  dsn: ${%s}
+				
+				server:
+				  port: ${%s}
+				`
+
+				content := fmt.Sprintf(contentString, dsnEnvVariableName, portEnvVariableName)
+				contentBytes := []byte(content)
+
+				// when
+				_, err := ExpandEnvIn(contentBytes)
+
+				// then
+				Expect(err).To(BeNil())
 			})
 		})
 
