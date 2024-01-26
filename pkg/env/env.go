@@ -85,7 +85,22 @@ func ExpandEnvIn(content []byte) ([]byte, error) {
 		}
 
 		envValueBytes := []byte(envValue)
+		isNewContentIncreasingNeeded := false
+
 		for k := 0; k < len(envValueBytes); k++ {
+			if newContentIndex == len(newContent) {
+				isNewContentIncreasingNeeded = true
+			}
+
+			if isNewContentIncreasingNeeded {
+				newContent = append(newContent, envValueBytes[k])
+
+				isNewContentIncreasingNeeded = false
+				newContentIndex++
+
+				continue
+			}
+
 			newContent[newContentIndex] = envValueBytes[k]
 			newContentIndex++
 		}

@@ -94,6 +94,27 @@ var _ = Describe("Verifying correctness of env expansion", Label("env"), func() 
 			})
 		})
 
+		Context("and env variable is presented with too long value", func() {
+			It("should successfully expand the env with its value when the env exists", func() {
+				// given
+				envVariableName := "APP_DSN"
+				envValue := "postgresql://localhost/app?user=dbuser&password=dbuser"
+
+				_ = os.Setenv(envVariableName, envValue)
+
+				content := fmt.Sprintf("${%s}", envVariableName)
+				contentBytes := []byte(content)
+
+				// when
+				expandedContent, err := ExpandEnvIn(contentBytes)
+				expandedContentString := string(expandedContent)
+
+				// then
+				Expect(err).To(BeNil())
+				Expect(expandedContentString).To(Equal(envValue))
+			})
+		})
+
 		Context("and an env variable is presented in a content and the variable could be empty", func() {
 			It("should successfully expand the env with an empty value the env doesn't exist", func() {
 				// given
