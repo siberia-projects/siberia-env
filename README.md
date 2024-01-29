@@ -1,8 +1,10 @@
 Siberia Env
 =================
 
-[![Author](https://img.shields.io/badge/author-@siberia_projects-green.svg)](https://github.com/siberia-projects/siberia-env)
+[![Author](https://img.shields.io/badge/author-@siberia_projects-green.svg)](https://github.com/siberia-projects)
 [![Source Code](https://img.shields.io/badge/source-siberia/main-blue.svg)](https://github.com/siberia-projects/siberia-env)
+![Version](https://img.shields.io/badge/version-v1.0.2-orange.svg)
+[![Coverage Status](https://coveralls.io/repos/github/siberia-projects/siberia-env/badge.svg?branch=main)](https://coveralls.io/github/siberia-projects/siberia-env?branch=main)
 
 ## What is it?
 Siberia-env is a library written on clear go for working with environment variables
